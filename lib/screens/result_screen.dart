@@ -39,7 +39,7 @@ class ResultScreen extends StatelessWidget {
           height: 30.0,
         ),
         Text(
-          bmi.category,
+          bmi.category.toString(),
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 30.0),
         ),

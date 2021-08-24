@@ -1,31 +1,43 @@
 import 'package:bmi_calc/model/bmi.dart';
+import 'package:flutter/cupertino.dart';
+
+enum Category {
+  starving,
+  thinness,
+  underweight,
+  normal,
+  overweight,
+  obesityI,
+  obesityII,
+  obesityIII
+}
 
 class BmiCalculator {
-  static double calculateMetric(double height, double weight) =>
+  double calculateMetric(double height, double weight) =>
       (weight / (height * height));
 
-  static double calculateImperial(double height, double weight) =>
+  double calculateImperial(double height, double weight) =>
       (weight / (height * height)) * 703;
 
-  static String category(double bmi) {
+  Category category(double bmi) {
     if (bmi < 16) {
-      return 'Wygłodzenie';
+      return Category.starving;
     } else if (bmi >= 16 && bmi < 16.9) {
-      return 'Wychudzenie';
+      return Category.thinness;
     } else if (bmi >= 17 && bmi < 18.5) {
-      return 'Niedowaga';
+      return Category.underweight;
     } else if (bmi >= 18.5 && bmi < 24.9) {
-      return 'Waga prawidłowa';
+      return Category.normal;
     } else if (bmi >= 25 && bmi < 29.9) {
-      return 'Nadwaga';
+      return Category.overweight;
     } else if (bmi >= 30 && bmi < 34.9) {
-      return 'Otyłość I stopnia';
+      return Category.obesityI;
     } else if (bmi >= 35 && bmi < 39.9) {
-      return 'Otyłość II stopnia';
+      return Category.obesityII;
     } else if (bmi >= 40) {
-      return 'Otyłość III stopnia';
+      return Category.obesityIII;
     } else {
-      return 'błąd';
+      throw Exception('No category error');
     }
   }
 }

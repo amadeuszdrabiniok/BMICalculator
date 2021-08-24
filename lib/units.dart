@@ -1,4 +1,5 @@
-const units = ['imperial', 'metric'];
+enum Units { imperial, metric }
+
 const unitsSufix = {
   'metricWeight': 'kg',
   'metricHeight': 'm',

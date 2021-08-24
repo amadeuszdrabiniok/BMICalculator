@@ -4,7 +4,7 @@ part of 'bmi_bloc.dart';
 abstract class BmiState {}
 
 class BmiInitial extends BmiState {
-  final unitSelected = 'metric';
+  final Units unitSelected = Units.metric;
 }
 
 class BmiShowResults extends BmiState {
@@ -14,13 +14,13 @@ class BmiShowResults extends BmiState {
 }
 
 class BmiSelectedMetric extends BmiState {
-  final String unitSelected;
+  final Units unitSelected;
 
   BmiSelectedMetric(this.unitSelected);
 }
 
 class BmiSelectedImperial extends BmiState {
-  final String unitSelected;
+  final Units unitSelected;
 
   BmiSelectedImperial(this.unitSelected);
 }

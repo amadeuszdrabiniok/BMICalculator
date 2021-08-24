@@ -31,17 +31,12 @@ class _HomePageState extends State<HomePage> {
             },
             child: BlocBuilder<BmiBloc, BmiState>(
               builder: (context, state) {
-                if (state is BmiInitial) {
-                  return _buildHomePage();
+                if (state is BmiSelectedMetric) {
+                  return _buildHomePage(state.unitSelected);
                 } else if (state is BmiSelectedMetric) {
-                  return _buildHomePage();
-                } else if (state is BmiSelectedImperial) {
-                  return _buildHomePage();
-                } else if (state is BmiError) {
-                  return _buildHomePage();
-                } else {
-                  return _buildHomePage();
-                }
+                  return _buildHomePage(state.unitSelected);
+                } else
+                  return _buildHomePage(Units.metric);
               },
             ),
           ),
@@ -50,7 +45,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Column _buildHomePage() {
+  Column _buildHomePage(Units unit) {
     return Column(
       children: [
         Text(
@@ -63,10 +58,9 @@ class _HomePageState extends State<HomePage> {
           textAlign: TextAlign.center,
           decoration: InputDecoration(
             hintText: 'Podaj wzrost',
-            suffixText:
-                BlocProvider.of<BmiBloc>(context).currentUnit == 'metric'
-                    ? unitsSufix['metricHeight']
-                    : unitsSufix['imperialHeight'],
+            suffixText: unit == Units.metric
+                ? unitsSufix['metricHeight']
+                : unitsSufix['imperialHeight'],
           ),
         ),
         SizedBox(height: 50.0),
@@ -80,14 +74,13 @@ class _HomePageState extends State<HomePage> {
           textAlign: TextAlign.center,
           decoration: InputDecoration(
             hintText: 'Podaj wagę',
-            suffixText:
-                BlocProvider.of<BmiBloc>(context).currentUnit == 'metric'
-                    ? unitsSufix['metricWeight']
-                    : unitsSufix['imperialWeight'],
+            suffixText: unit == Units.metric
+                ? unitsSufix['metricWeight']
+                : unitsSufix['imperialWeight'],
           ),
         ),
         SizedBox(height: 50.0),
-        _buildDropdownButton(),
+        _buildDropdownButton(unit),
         SizedBox(height: 50.0),
         ElevatedButton(
           style: ButtonStyle(
@@ -114,14 +107,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  DropdownButton _buildDropdownButton() {
-    return DropdownButton(
+  DropdownButton _buildDropdownButton(Units unit) {
+    return DropdownButton<Units>(
       value: BlocProvider.of<BmiBloc>(context).currentUnit,
       onChanged: (value) {
-        BlocProvider.of<BmiBloc>(context).add(DropdownChange(value));
+        BlocProvider.of<BmiBloc>(context).add(DropdownChange(value!));
       },
-      items: units.map((e) {
-        return DropdownMenuItem(
+      items: Units.values.map((e) {
+        return DropdownMenuItem<Units>(
           value: e,
           child: Text(e.toString()),
         );

@@ -11,7 +11,7 @@ class GetBmiResults extends BmiEvent {
 }
 
 class DropdownChange extends BmiEvent {
-  final String unitSelected;
+  final Units unitSelected;
 
   DropdownChange(this.unitSelected);
 }
