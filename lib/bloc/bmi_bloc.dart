@@ -9,7 +9,7 @@ part 'package:bmi_calc/bloc/bmi_event.dart';
 part 'package:bmi_calc/bloc/bmi_state.dart';
 
 class BmiBloc extends Bloc<BmiEvent, BmiState> {
-  BmiBloc() : super(BmiInitial());
+  BmiBloc() : super(BmiInitial(Units.metric));
   Units currentUnit = Units.metric;
 
   @override
@@ -17,27 +17,28 @@ class BmiBloc extends Bloc<BmiEvent, BmiState> {
     BmiEvent event,
   ) async* {
     if (event is DropdownChange) {
-      if (event.unitSelected == Units.imperial) {
-        currentUnit = event.unitSelected;
-        yield BmiSelectedImperial(event.unitSelected);
-      } else if (event.unitSelected == Units.metric) {
-        currentUnit = event.unitSelected;
-        yield BmiSelectedMetric(event.unitSelected);
-      }
+      currentUnit = event.unitSelected;
+      yield BmiInitial(event.unitSelected);
     } else if (event is GetBmiResults) {
       try {
         if (currentUnit == Units.metric) {
+          BmiCalculator bmiCalculator = new BmiCalculator();
           BMI bmi = new BMI(
-              BmiCalculator().calculateMetric(event.height!, event.weight!),
-              BmiCalculator().category(BmiCalculator()
-                  .calculateMetric(event.height!, event.weight!)));
-          yield BmiShowResults(bmi);
+            bmiCalculator.calculateMetric(event.height!, event.weight!),
+            bmiCalculator.category(
+              bmiCalculator.calculateMetric(event.height!, event.weight!),
+            ),
+          );
+          yield BmiShowResults(bmi, Units.metric);
         } else if (currentUnit == Units.imperial) {
+          BmiCalculator bmiCalculator = new BmiCalculator();
           BMI bmi = new BMI(
-              BmiCalculator().calculateImperial(event.height!, event.weight!),
-              BmiCalculator().category(BmiCalculator()
-                  .calculateImperial(event.height!, event.weight!)));
-          yield BmiShowResults(bmi);
+            bmiCalculator.calculateImperial(event.height!, event.weight!),
+            bmiCalculator.category(
+              bmiCalculator.calculateImperial(event.height!, event.weight!),
+            ),
+          );
+          yield BmiShowResults(bmi, Units.imperial);
         }
       } catch (e) {
         yield BmiError(e.toString());

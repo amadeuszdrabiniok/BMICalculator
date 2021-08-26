@@ -1,4 +1,5 @@
 import 'package:bmi_calc/bloc/bmi_bloc.dart';
+import 'package:bmi_calc/calculator/bmi_calculator.dart';
 import 'package:bmi_calc/model/bmi.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,11 +40,33 @@ class ResultScreen extends StatelessWidget {
           height: 30.0,
         ),
         Text(
-          bmi.category.toString(),
+          _returnCategoryName(bmi.category),
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 30.0),
         ),
       ],
     );
+  }
+
+  String _returnCategoryName(Category category) {
+    if (category == Category.starving) {
+      return 'Wygłodzenie';
+    } else if (category == Category.thinness) {
+      return 'Wychudzenie';
+    } else if (category == Category.underweight) {
+      return 'Niedowaga';
+    } else if (category == Category.normal) {
+      return 'Waga prawidłowa';
+    } else if (category == Category.overweight) {
+      return 'Nadwaga';
+    } else if (category == Category.obesityI) {
+      return 'Otyłość I stopnia';
+    } else if (category == Category.obesityII) {
+      return 'Otyłość II stopnia';
+    } else if (category == Category.obesityIII) {
+      return 'Otyłość III stopnia';
+    } else {
+      throw Exception('category error');
+    }
   }
 }

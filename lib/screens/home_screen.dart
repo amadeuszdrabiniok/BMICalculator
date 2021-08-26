@@ -31,12 +31,13 @@ class _HomePageState extends State<HomePage> {
             },
             child: BlocBuilder<BmiBloc, BmiState>(
               builder: (context, state) {
-                if (state is BmiSelectedMetric) {
+                if (state is BmiInitial) {
                   return _buildHomePage(state.unitSelected);
-                } else if (state is BmiSelectedImperial) {
+                } else if (state is BmiShowResults) {
                   return _buildHomePage(state.unitSelected);
-                } else
+                } else {
                   return _buildHomePage(Units.metric);
+                }
               },
             ),
           ),
@@ -111,17 +112,26 @@ class _HomePageState extends State<HomePage> {
 
   DropdownButton _buildDropdownButton(Units unit) {
     return DropdownButton<Units>(
-      value: BlocProvider.of<BmiBloc>(context)
-          .currentUnit, //TODO: Replace with state
+      value: unit,
       onChanged: (value) {
         BlocProvider.of<BmiBloc>(context).add(DropdownChange(value!));
       },
       items: Units.values.map((e) {
         return DropdownMenuItem<Units>(
           value: e,
-          child: Text(e.toString()),
+          child: Text(_returnUnitName(e)),
         );
       }).toList(),
     );
+  }
+
+  String _returnUnitName(Units unit) {
+    if (unit == Units.metric) {
+      return 'metryczne';
+    } else if (unit == Units.imperial) {
+      return 'imperialne';
+    } else {
+      throw Exception('no unit error');
+    }
   }
 }

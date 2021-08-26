@@ -4,25 +4,16 @@ part of 'package:bmi_calc/bloc/bmi_bloc.dart';
 abstract class BmiState {}
 
 class BmiInitial extends BmiState {
-  final Units unitSelected = Units.metric;
+  final Units unitSelected;
+
+  BmiInitial(this.unitSelected);
 }
 
 class BmiShowResults extends BmiState {
   final BMI bmi;
-
-  BmiShowResults(this.bmi);
-}
-
-class BmiSelectedMetric extends BmiState {
   final Units unitSelected;
 
-  BmiSelectedMetric(this.unitSelected);
-}
-
-class BmiSelectedImperial extends BmiState {
-  final Units unitSelected;
-
-  BmiSelectedImperial(this.unitSelected);
+  BmiShowResults(this.bmi, this.unitSelected);
 }
 
 class BmiError extends BmiState {
