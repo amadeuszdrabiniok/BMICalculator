@@ -1,17 +1,16 @@
 import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:bmi_calc/calculator/bmi_calculator.dart';
 import 'package:bmi_calc/model/bmi.dart';
 import 'package:bmi_calc/units.dart';
 import 'package:meta/meta.dart';
 
-part 'bmi_event.dart';
-part 'bmi_state.dart';
+part 'package:bmi_calc/bloc/bmi_event.dart';
+part 'package:bmi_calc/bloc/bmi_state.dart';
 
 class BmiBloc extends Bloc<BmiEvent, BmiState> {
   BmiBloc() : super(BmiInitial());
-  var currentUnit = Units.metric;
+  Units currentUnit = Units.metric;
 
   @override
   Stream<BmiState> mapEventToState(

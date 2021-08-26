@@ -1,6 +1,3 @@
-import 'package:bmi_calc/model/bmi.dart';
-import 'package:flutter/cupertino.dart';
-
 enum Category {
   starving,
   thinness,

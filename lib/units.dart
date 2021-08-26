@@ -1,8 +1,10 @@
 enum Units { imperial, metric }
 
+enum UnitsSuffix { metricWeight, metricHeight, imperialWeight, imperialHeight }
+
 const unitsSufix = {
-  'metricWeight': 'kg',
-  'metricHeight': 'm',
-  'imperialWeight': 'ib',
-  'imperialHeight': 'in',
+  UnitsSuffix.metricWeight: 'kg',
+  UnitsSuffix.metricHeight: 'm',
+  UnitsSuffix.imperialWeight: 'ib',
+  UnitsSuffix.imperialHeight: 'in',
 };

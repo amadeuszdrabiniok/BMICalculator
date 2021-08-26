@@ -1,4 +1,4 @@
-part of 'bmi_bloc.dart';
+part of 'package:bmi_calc/bloc/bmi_bloc.dart';
 
 @immutable
 abstract class BmiEvent {}

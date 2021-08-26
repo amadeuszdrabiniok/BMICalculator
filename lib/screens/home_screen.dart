@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
               builder: (context, state) {
                 if (state is BmiSelectedMetric) {
                   return _buildHomePage(state.unitSelected);
-                } else if (state is BmiSelectedMetric) {
+                } else if (state is BmiSelectedImperial) {
                   return _buildHomePage(state.unitSelected);
                 } else
                   return _buildHomePage(Units.metric);
@@ -59,8 +59,8 @@ class _HomePageState extends State<HomePage> {
           decoration: InputDecoration(
             hintText: 'Podaj wzrost',
             suffixText: unit == Units.metric
-                ? unitsSufix['metricHeight']
-                : unitsSufix['imperialHeight'],
+                ? unitsSufix[UnitsSuffix.metricHeight]
+                : unitsSufix[UnitsSuffix.imperialHeight],
           ),
         ),
         SizedBox(height: 50.0),
@@ -75,8 +75,8 @@ class _HomePageState extends State<HomePage> {
           decoration: InputDecoration(
             hintText: 'Podaj wagę',
             suffixText: unit == Units.metric
-                ? unitsSufix['metricWeight']
-                : unitsSufix['imperialWeight'],
+                ? unitsSufix[UnitsSuffix.metricWeight]
+                : unitsSufix[UnitsSuffix.imperialWeight],
           ),
         ),
         SizedBox(height: 50.0),
@@ -88,8 +88,10 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {
             BlocProvider.of<BmiBloc>(context).add(
               GetBmiResults(
-                double.tryParse(weightController.value.text),
-                double.tryParse(heightController.value.text),
+                double.tryParse(
+                    weightController.value.text.replaceAll(',', '.')),
+                double.tryParse(
+                    heightController.value.text.replaceAll(',', '.')),
               ),
             );
             Navigator.of(context).push(
@@ -109,7 +111,8 @@ class _HomePageState extends State<HomePage> {
 
   DropdownButton _buildDropdownButton(Units unit) {
     return DropdownButton<Units>(
-      value: BlocProvider.of<BmiBloc>(context).currentUnit,
+      value: BlocProvider.of<BmiBloc>(context)
+          .currentUnit, //TODO: Replace with state
       onChanged: (value) {
         BlocProvider.of<BmiBloc>(context).add(DropdownChange(value!));
       },
