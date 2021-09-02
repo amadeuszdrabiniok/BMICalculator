@@ -1,4 +1,6 @@
-enum Category {
+import 'package:bmi_calc/model/bmi.dart';
+
+enum CategoryName {
   starving,
   thinness,
   underweight,
@@ -10,29 +12,37 @@ enum Category {
 }
 
 class BmiCalculator {
-  double calculateMetric(double height, double weight) =>
+  double calculateBmi(double height, double weight) =>
       (weight / (height * height));
 
-  double calculateImperial(double height, double weight) =>
-      (weight / (height * height)) * 703;
+  BMI convertToImperial(BMI bmiToConvert) {
+    double bmiValue = bmiToConvert.bmiValue * 703;
+    CategoryName categoryName = getCategory(bmiValue);
 
-  Category category(double bmi) {
-    if (bmi < 16) {
-      return Category.starving;
+    return BMI(bmiValue, categoryName);
+  }
+
+  CategoryName getCategory(double bmi) {
+    if (bmi <= 0) {
+      throw Exception('bmi eq/less than 0');
+    } else if (bmi > 0 && bmi < 16) {
+      return CategoryName.starving;
     } else if (bmi >= 16 && bmi < 16.9) {
-      return Category.thinness;
+      return CategoryName.thinness;
     } else if (bmi >= 17 && bmi < 18.5) {
-      return Category.underweight;
+      return CategoryName.underweight;
     } else if (bmi >= 18.5 && bmi < 24.9) {
-      return Category.normal;
+      return CategoryName.normal;
     } else if (bmi >= 25 && bmi < 29.9) {
-      return Category.overweight;
+      return CategoryName.overweight;
     } else if (bmi >= 30 && bmi < 34.9) {
-      return Category.obesityI;
+      return CategoryName.obesityI;
     } else if (bmi >= 35 && bmi < 39.9) {
-      return Category.obesityII;
+      return CategoryName.obesityII;
     } else if (bmi >= 40) {
-      return Category.obesityIII;
+      return CategoryName.obesityIII;
+    } else if (bmi == double.infinity) {
+      throw Exception('height is zero');
     } else {
       throw Exception('No category error');
     }

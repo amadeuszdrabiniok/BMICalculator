@@ -89,10 +89,8 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {
             BlocProvider.of<BmiBloc>(context).add(
               GetBmiResults(
-                double.tryParse(
-                    weightController.value.text.replaceAll(',', '.')),
-                double.tryParse(
-                    heightController.value.text.replaceAll(',', '.')),
+                _validateInput(weightController),
+                _validateInput(heightController),
               ),
             );
             Navigator.of(context).push(
@@ -108,6 +106,14 @@ class _HomePageState extends State<HomePage> {
         ),
       ],
     );
+  }
+
+  double _validateInput(TextEditingController controller) {
+    if (double.tryParse(controller.value.text.replaceAll(',', '.')) != null) {
+      return double.parse(controller.value.text.replaceAll(',', '.'));
+    } else {
+      throw Exception('null input value');
+    }
   }
 
   DropdownButton _buildDropdownButton(Units unit) {

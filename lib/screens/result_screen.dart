@@ -48,25 +48,25 @@ class ResultScreen extends StatelessWidget {
     );
   }
 
-  String _returnCategoryName(Category category) {
-    if (category == Category.starving) {
+  String _returnCategoryName(CategoryName category) {
+    if (category == CategoryName.starving) {
       return 'Wygłodzenie';
-    } else if (category == Category.thinness) {
+    } else if (category == CategoryName.thinness) {
       return 'Wychudzenie';
-    } else if (category == Category.underweight) {
+    } else if (category == CategoryName.underweight) {
       return 'Niedowaga';
-    } else if (category == Category.normal) {
+    } else if (category == CategoryName.normal) {
       return 'Waga prawidłowa';
-    } else if (category == Category.overweight) {
+    } else if (category == CategoryName.overweight) {
       return 'Nadwaga';
-    } else if (category == Category.obesityI) {
+    } else if (category == CategoryName.obesityI) {
       return 'Otyłość I stopnia';
-    } else if (category == Category.obesityII) {
+    } else if (category == CategoryName.obesityII) {
       return 'Otyłość II stopnia';
-    } else if (category == Category.obesityIII) {
+    } else if (category == CategoryName.obesityIII) {
       return 'Otyłość III stopnia';
     } else {
-      throw Exception('category error');
+      throw Exception('no category error');
     }
   }
 }

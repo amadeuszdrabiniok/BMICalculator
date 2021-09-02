@@ -4,8 +4,8 @@ part of 'package:bmi_calc/bloc/bmi_bloc.dart';
 abstract class BmiEvent {}
 
 class GetBmiResults extends BmiEvent {
-  final double? weight;
-  final double? height;
+  final double weight;
+  final double height;
 
   GetBmiResults(this.weight, this.height);
 }
