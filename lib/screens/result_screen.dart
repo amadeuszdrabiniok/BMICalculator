@@ -13,10 +13,8 @@ class ResultScreen extends StatelessWidget {
           builder: (context, state) {
             if (state is BmiShowResults) {
               return _buildResult(state.bmi);
-            } else if (state is BmiError) {
-              Navigator.pop(context);
-            }
-            return Text('error');
+            } else
+              return Text('error');
           },
         ),
       ),

@@ -8,7 +8,7 @@ enum CategoryName {
   overweight,
   obesityI,
   obesityII,
-  obesityIII
+  obesityIII,
 }
 
 class BmiCalculator {

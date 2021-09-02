@@ -25,19 +25,25 @@ class _HomePageState extends State<HomePage> {
           child: BlocListener<BmiBloc, BmiState>(
             listener: (context, state) {
               if (state is BmiError) {
+                Navigator.pop(context);
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text(state.errorMessage)));
               }
             },
             child: BlocBuilder<BmiBloc, BmiState>(
+              buildWhen: (previous, current) {
+                if (current is BmiError) {
+                  return false;
+                } else
+                  return true;
+              },
               builder: (context, state) {
                 if (state is BmiInitial) {
                   return _buildHomePage(state.unitSelected);
                 } else if (state is BmiShowResults) {
                   return _buildHomePage(state.unitSelected);
-                } else {
-                  return _buildHomePage(Units.metric);
-                }
+                } else
+                  throw Exception('no state error');
               },
             ),
           ),
