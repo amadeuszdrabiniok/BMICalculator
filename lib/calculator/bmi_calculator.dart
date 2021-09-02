@@ -23,9 +23,7 @@ class BmiCalculator {
   }
 
   CategoryName getCategory(double bmi) {
-    if (bmi <= 0) {
-      throw Exception('bmi eq/less than 0');
-    } else if (bmi > 0 && bmi < 16) {
+    if (bmi > 0 && bmi < 16) {
       return CategoryName.starving;
     } else if (bmi >= 16 && bmi < 16.9) {
       return CategoryName.thinness;
@@ -41,8 +39,6 @@ class BmiCalculator {
       return CategoryName.obesityII;
     } else if (bmi >= 40) {
       return CategoryName.obesityIII;
-    } else if (bmi == double.infinity) {
-      throw Exception('height is zero');
     } else {
       throw Exception('No category error');
     }

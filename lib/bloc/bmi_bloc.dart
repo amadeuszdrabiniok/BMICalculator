@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:html';
 import 'package:bloc/bloc.dart';
 import 'package:bmi_calc/calculator/bmi_calculator.dart';
 import 'package:bmi_calc/model/bmi.dart';
@@ -32,7 +31,10 @@ class BmiBloc extends Bloc<BmiEvent, BmiState> {
   }
 
   BMI _getBmiResult(GetBmiResults event) {
-    double bmiResult = bmiCalculator.calculateBmi(event.height, event.weight);
+    double parsedHeight = _parseInput(event.height);
+    double parsedWeight = _parseInput(event.weight);
+
+    double bmiResult = bmiCalculator.calculateBmi(parsedHeight, parsedWeight);
     CategoryName category = bmiCalculator.getCategory(bmiResult);
     BMI bmi = new BMI(bmiResult, category);
 
@@ -42,6 +44,19 @@ class BmiBloc extends Bloc<BmiEvent, BmiState> {
       return bmiCalculator.convertToImperial(bmi);
     } else {
       throw Exception('get result unit error');
+    }
+  }
+
+  double _parseInput(String input) {
+    if (double.tryParse(input.replaceAll(',', '.')) != null) {
+      double tempParsed = double.parse(input.replaceAll(',', '.'));
+      if (tempParsed <= 0) {
+        throw Exception('parsed value less/eq zero');
+      } else {
+        return tempParsed;
+      }
+    } else {
+      throw Exception('cannot parse input');
     }
   }
 }
