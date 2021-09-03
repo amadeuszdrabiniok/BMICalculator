@@ -1,4 +1,8 @@
+import 'package:bmi_calc/bloc/bmi_bloc.dart';
+import 'package:bmi_calc/errors/errors.dart';
 import 'package:bmi_calc/model/bmi.dart';
+
+import '../units.dart';
 
 enum CategoryName {
   starving,
@@ -12,14 +16,61 @@ enum CategoryName {
 }
 
 class BmiCalculator {
-  double calculateBmi(double height, double weight) =>
-      (weight / (height * height));
+  double calculateBmi(String height, String weight, Units selectedUnit) {
+    double parsedWeight = _parseInput(weight, selectedUnit, Parameters.weight);
+    double parsedHeight = _parseInput(height, selectedUnit, Parameters.height);
+
+    return (parsedWeight / (parsedHeight * parsedHeight));
+  }
 
   BMI convertToImperial(BMI bmiToConvert) {
     double bmiValue = bmiToConvert.bmiValue * 703;
     CategoryName categoryName = getCategory(bmiValue);
 
     return BMI(bmiValue, categoryName);
+  }
+
+  double _parseInput(String input, Units selectedUnit, Parameters parameter) {
+    if (double.tryParse(input.replaceAll(',', '.')) != null) {
+      double parsedInput = double.parse(input.replaceAll(',', '.'));
+
+      if (_validateInput(parsedInput, selectedUnit, parameter)) {
+        return parsedInput;
+      } else {
+        throw CannotValidateException();
+      }
+    } else {
+      throw CannotParseInputException();
+    }
+  }
+
+  bool _validateInput(
+      double input, Units unitOfParameter, Parameters parameter) {
+    if (input <= 0) {
+      throw ParsedValueLessEqZeroException();
+    } else if (unitOfParameter == Units.metric &&
+        parameter == Parameters.weight &&
+        input > 635) {
+      //heaviest person in history
+      throw WeightTooHighException();
+    } else if (unitOfParameter == Units.metric &&
+        parameter == Parameters.height &&
+        input > 2.72) {
+      //tallest person in history
+      throw HeightTooHighException();
+    } else if (unitOfParameter == Units.imperial &&
+        parameter == Parameters.weight &&
+        input > 294) {
+      //heaviest person in history
+      throw WeightTooHighException();
+    } else if (unitOfParameter == Units.imperial &&
+        parameter == Parameters.height &&
+        input > 107.09) {
+      //tallest person in history
+      throw HeightTooHighException();
+    } else {
+      return true;
+    }
   }
 
   CategoryName getCategory(double bmi) {
@@ -40,7 +91,7 @@ class BmiCalculator {
     } else if (bmi >= 40) {
       return CategoryName.obesityIII;
     } else {
-      throw Exception('No category error');
+      throw NoCategoryException();
     }
   }
 }

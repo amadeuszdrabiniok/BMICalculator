@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:bmi_calc/calculator/bmi_calculator.dart';
+import 'package:bmi_calc/errors/errors.dart';
 import 'package:bmi_calc/model/bmi.dart';
 import 'package:bmi_calc/units.dart';
 import 'package:flutter/foundation.dart';
@@ -8,6 +9,11 @@ import 'package:meta/meta.dart';
 
 part 'package:bmi_calc/bloc/bmi_event.dart';
 part 'package:bmi_calc/bloc/bmi_state.dart';
+
+enum Parameters {
+  height,
+  weight,
+}
 
 class BmiBloc extends Bloc<BmiEvent, BmiState> {
   BmiBloc() : super(BmiInitial(Units.metric));
@@ -31,10 +37,8 @@ class BmiBloc extends Bloc<BmiEvent, BmiState> {
   }
 
   BMI _getBmiResult(GetBmiResults event) {
-    double parsedHeight = _parseInput(event.height);
-    double parsedWeight = _parseInput(event.weight);
-
-    double bmiResult = bmiCalculator.calculateBmi(parsedHeight, parsedWeight);
+    double bmiResult =
+        bmiCalculator.calculateBmi(event.height, event.weight, currentUnit);
     CategoryName category = bmiCalculator.getCategory(bmiResult);
     BMI bmi = new BMI(bmiResult, category);
 
@@ -43,20 +47,7 @@ class BmiBloc extends Bloc<BmiEvent, BmiState> {
     } else if (currentUnit == Units.imperial) {
       return bmiCalculator.convertToImperial(bmi);
     } else {
-      throw Exception('get result unit error');
-    }
-  }
-
-  double _parseInput(String input) {
-    if (double.tryParse(input.replaceAll(',', '.')) != null) {
-      double tempParsed = double.parse(input.replaceAll(',', '.'));
-      if (tempParsed <= 0) {
-        throw Exception('parsed value less/eq zero');
-      } else {
-        return tempParsed;
-      }
-    } else {
-      throw Exception('cannot parse input');
+      throw GetResultUnitException();
     }
   }
 }

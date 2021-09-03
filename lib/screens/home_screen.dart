@@ -1,4 +1,5 @@
 import 'package:bmi_calc/bloc/bmi_bloc.dart';
+import 'package:bmi_calc/errors/errors.dart';
 import 'package:bmi_calc/screens/result_screen.dart';
 import 'package:bmi_calc/units.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> {
                 } else if (state is BmiShowResults) {
                   return _buildHomePage(state.unitSelected);
                 } else
-                  throw Exception('no state error');
+                  throw NoStateException();
               },
             ),
           ),
@@ -133,7 +134,7 @@ class _HomePageState extends State<HomePage> {
     } else if (unit == Units.imperial) {
       return 'imperialne';
     } else {
-      throw Exception('no unit error');
+      throw NoUnitException();
     }
   }
 }

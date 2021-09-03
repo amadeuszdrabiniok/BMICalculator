@@ -64,7 +64,7 @@ class ResultScreen extends StatelessWidget {
     } else if (category == CategoryName.obesityIII) {
       return 'Otyłość III stopnia';
     } else {
-      throw Exception('no category error');
+      return 'error';
     }
   }
 }
